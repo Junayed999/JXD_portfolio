@@ -1,14 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 export default function LenisProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const lenisRef = useRef<InstanceType<typeof import("lenis").default> | null>(null);
-
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -16,21 +14,21 @@ export default function LenisProvider({
 
     if (prefersReducedMotion) return;
 
-    let lenis: InstanceType<typeof import("lenis").default> | null = null;
     let raf: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let lenisInstance: any = null;
 
     const initLenis = async () => {
-      const Lenis = (await import("lenis")).default;
-      lenis = new Lenis({
+      const { default: Lenis } = await import("lenis");
+      lenisInstance = new Lenis({
         duration: 1.2,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        orientation: "vertical",
+        orientation: "vertical" as const,
         smoothWheel: true,
       });
-      lenisRef.current = lenis;
 
       function animate(time: number) {
-        lenis!.raf(time);
+        lenisInstance.raf(time);
         raf = requestAnimationFrame(animate);
       }
       raf = requestAnimationFrame(animate);
@@ -40,7 +38,7 @@ export default function LenisProvider({
 
     return () => {
       cancelAnimationFrame(raf);
-      lenis?.destroy();
+      lenisInstance?.destroy();
     };
   }, []);
 

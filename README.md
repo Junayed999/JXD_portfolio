@@ -1,36 +1,114 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# JNX — Premium Landing Page
 
-## Getting Started
+A production-quality single-page landing site built with **Next.js 16**, **TypeScript**, **Tailwind CSS v4**, and **Framer Motion**. Monochrome palette, buttery smooth scroll, premium micro-interactions.
 
-First, run the development server:
+---
+
+## 🚀 Getting Started
 
 ```bash
+# Navigate to the project
+cd jnx-app
+
+# Install dependencies
+npm install
+
+# Start dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# → http://localhost:3000
+
+# Production build
+npm run build
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 File Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+jnx-app/
+├── app/
+│   ├── globals.css          # Design tokens, grain overlay, keyframes
+│   ├── layout.tsx           # Outfit font, grain, cursor, Lenis
+│   └── page.tsx             # Assembles all sections
+├── components/
+│   ├── CustomCursor.tsx     # Black dot + grey ring, scales on hover
+│   ├── LenisProvider.tsx    # Buttery smooth scroll (Lenis)
+│   ├── PageIntro.tsx        # White screen → JNX wordmark draws → slide-up
+│   ├── ScrollProgressBar.tsx# Thin black progress bar at top
+│   ├── SectionWrapper.tsx   # Fade-up + blur-to-sharp reveal (reusable)
+│   ├── Navbar.tsx           # Sticky glass nav + mobile menu
+│   ├── Hero.tsx             # Headline animation, phone mockup, parallax
+│   ├── StatsStrip.tsx       # Count-up stats, overlaps hero
+│   ├── Benefits.tsx         # Feature cards + dotted world map with pins
+│   ├── SearchSection.tsx    # Scroll-linked text, floating search bar
+│   ├── Community.tsx        # SVG avatar cluster, speech bubbles
+│   ├── Testimonials.tsx     # Drag carousel + dot pagination
+│   ├── FaqNewsletter.tsx    # Accordion + email form with success animation
+│   └── Footer.tsx           # Black rounded-top footer with social icons
+└── lib/
+    └── content.ts           # ← ALL site copy lives here (edit me!)
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## ✏️ Customizing Copy
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Edit `lib/content.ts`** to change any text, stats, testimonials, FAQ items, or footer links — everything flows from this single file:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```ts
+// Example: Change the hero headline
+hero: {
+  headline: ["Build Your", "Brand,", "But In A", "Good Way!"],
+  // ↑ Each string is one line
+}
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🎨 Design Tokens
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+All colors and typography live in `app/globals.css` under `@theme`:
+
+```css
+@theme {
+  --color-jnx-black: #0A0A0A;   /* headings, buttons, footer */
+  --color-jnx-grey: #6B7280;    /* body text */
+  --color-jnx-border: #E5E7EB;  /* card borders */
+  --color-jnx-surface: #F5F5F7; /* page background */
+  --font-sans: "Outfit", system-ui, sans-serif;
+}
+```
+
+---
+
+## ♿ Accessibility
+
+- Semantic HTML5 (`<header>`, `<nav>`, `<main>`, `<section>`, `<footer>`)
+- All interactive elements have `aria-label`
+- Keyboard-navigable accordion (Enter/Space) and carousel (Tab + arrow buttons)
+- Focus-visible ring on all focusable elements
+- `prefers-reduced-motion` respected — all Framer Motion + Lenis animations skip
+
+---
+
+## 📦 Dependencies
+
+| Package | Version | Purpose |
+|---|---|---|
+| next | 16.x | Framework |
+| framer-motion | 14.x | All animations |
+| lenis | 1.x | Smooth scroll |
+| lucide-react | latest | Icons |
+| tailwindcss | 4.x | Styling |
+
+---
+
+## 🌐 Deployment
+
+Push to GitHub and deploy instantly to Vercel:
+
+```bash
+npx vercel --prod
+```
